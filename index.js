@@ -15,12 +15,29 @@ app.set('view engine','ejs')
 
 app.use(express.static('public'))
 
+const User = require('./models/user')
+const createInitialUser = async ()=>{
+    const total = await User.count({username:'Amanda Martins'})
+
+    if(total === 0){
+        const user = new User({
+            username:'Amanda Martins',
+            password:'abc123'
+        })
+        await user.save()
+        console.log('user created')
+    }else{
+        console.log('user created skipped')
+    }
+}
+
 app.get('/',(req,res)=>{
     res.render('index')
 })
 
-mongoose.connect(mongo)
+mongoose.connect(mongo,{useNewUrlParser:true})
 .then(()=>{
+    createInitialUser()
     app.listen(port, ()=>{
         console.log('listening')
     })
@@ -28,4 +45,3 @@ mongoose.connect(mongo)
 .catch((error)=>{
     console.log(error)
 })
-
