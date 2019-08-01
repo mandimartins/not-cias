@@ -25,5 +25,17 @@ UserSchema.pre('save',function(next){
         })
     })
 })
+
+UserSchema.methods.checkPassword = function(password){
+    return new Promise((resolve, reject)=>{
+        bcrypt.compare(password,this.password,(error,isMatch)=>{
+            if(error){
+                reject(error)
+            }else{
+                resolve(isMatch)
+            }
+        })
+    })
+}
 const User = mongoose.model('User',UserSchema)
 module.exports = User
