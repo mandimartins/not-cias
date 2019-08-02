@@ -14,6 +14,8 @@ const mongo = process.env.MONGODB || 'mongodb://localhost/noticias'
 const User = require('./models/user')
 const noticias = require('./routes/noticias')
 const restrito = require('./routes/restrito')
+const auth = require('./routes/auth')
+const pages = require('./routes/pages')
 
 app.set('views',path.join(__dirname,'views'))
 app.set('view engine','ejs')
@@ -22,6 +24,13 @@ app.use(session({ secret: 'fullstack-master' }))
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}))
+
+app.use((req, res, next)=>{
+    if('user' in req.session){
+        res.locals.user = req.session.user
+    }
+    next()
+})
 
 app.use('/restrito', (req, res, next)=>{
     if( 'user' in req.session){
@@ -32,22 +41,9 @@ app.use('/restrito', (req, res, next)=>{
 })
 app.use('/noticias',noticias)
 app.use('/restrito',restrito)
-app.get('/login',(req, res)=>{
-    res.render('login')
-})
 
-app.post('/login',async(req, res)=>{
-    const user = await User.findOne({username:req.body.username})
-    const isValid = await user.checkPassword(req.body.password)
-
-    if(isValid){
-        req.session.user = user
-        res.redirect('/restrito/noticias')
-    }else{
-        res.redirect('/login')
-    }
-
-})
+app.use('/', auth)
+app.use('/',pages)
 
 const createInitialUser = async ()=>{
     const total = await User.count({username:'Amanda Martins'})

@@ -4,6 +4,6 @@ const Noticia = require('../models/noticia')
 
 
 router.get('/',(req,res)=>{
-    res.send('noticias publicas')
+    res.send('noticias')
 })
 module.exports = router
