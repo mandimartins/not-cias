@@ -25,26 +25,11 @@ app.use(session({ secret: 'fullstack-master' }))
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}))
-
-app.use((req, res, next)=>{
-    if('user' in req.session){
-        res.locals.user = req.session.user
-    }
-    next()
-})
-
-app.use('/restrito', (req, res, next)=>{
-    if( 'user' in req.session){
-        next()
-    }else{
-        res.redirect('/login')
-    }
-})
-app.use('/noticias',noticias)
-app.use('/restrito',restrito)
-
 app.use('/', auth)
 app.use('/',pages)
+
+app.use('/noticias',noticias)
+app.use('/restrito',restrito)
 
 const createInitialUser = async ()=>{
     const total = await User.count({username:'Amanda Martins'})
@@ -59,19 +44,19 @@ const createInitialUser = async ()=>{
     }else{
         console.log('user created skipped')
     }
-    const noticia = new Noticia ({
-        title: 'Notícia Publica ' + new Date().getTime(),
-        content:'Content',
-        category:'public'
-    })
-    await noticia.save()
+    // const noticia = new Noticia ({
+    //     title: 'Notícia Publica ' + new Date().getTime(),
+    //     content:'Content',
+    //     category:'public'
+    // })
+    // await noticia.save()
 
-    const noticia2 = new Noticia ({
-        title: 'Notícia Privada ' + new Date().getTime(),
-        content:'Content',
-        category:'private'
-    })
-    await noticia2.save()
+    // const noticia2 = new Noticia ({
+    //     title: 'Notícia Privada ' + new Date().getTime(),
+    //     content:'Content',
+    //     category:'private'
+    // })
+    // await noticia2.save()
 }
 
 mongoose.connect(mongo,{useNewUrlParser:true})

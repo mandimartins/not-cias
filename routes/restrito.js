@@ -3,6 +3,14 @@ const router = express.Router()
 
 const Noticia = require('../models/noticia')
 
+router.use((req, res, next)=>{
+    if( 'user' in req.session){
+        next()
+    }else{
+        res.redirect('/login')
+    }
+})
+
 router.get('/',(req,res)=>{res.send('restrito')})
 
 router.get('/noticias',async(req,res) =>{
