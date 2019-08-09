@@ -12,11 +12,11 @@ mongoose.Promise = global.Promise
 const mongo = process.env.MONGODB || 'mongodb://localhost/noticias'
 
 const User = require('./models/user')
-const Noticia = require('./models/noticia')
 const noticias = require('./routes/noticias')
 const restrito = require('./routes/restrito')
 const auth = require('./routes/auth')
 const pages = require('./routes/pages')
+
 
 app.set('views',path.join(__dirname,'views'))
 app.set('view engine','ejs')
@@ -35,11 +35,18 @@ const createInitialUser = async ()=>{
     const total = await User.count({username:'Amanda Martins'})
 
     if(total === 0){
-        const user = new User({
-            username:'Amanda Martins',
-            password:'abc123'
-        })
-        await user.save()
+        // const user = new User({
+        //     username:'user1',
+        //     password:'1234',
+        //     role: ['restrito', 'admin']
+        // })
+        // await user.save()
+        // const user = new User({
+        //     username:'user2',
+        //     password:'1234',
+        //     role: ['restrito']
+        // })
+        // await user.save()
         console.log('user created')
     }else{
         console.log('user created skipped')
