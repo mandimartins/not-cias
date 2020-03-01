@@ -1,6 +1,6 @@
 # Notícias
 
-O obetivo deste projeto é demonstrar que usuários tem diferentes privilégios baseados em seus papéis no sistema. O admin, inclusive, pode mudar seu próprio papel.
+O obetivo deste projeto é demonstrar que usuários tem diferentes privilégios baseados em seus papéis no sistema. O admin, inclusive, pode mudar seu próprio papel a partir do menu dropdown.
 
 
 
